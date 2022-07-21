@@ -80,22 +80,23 @@ def main() -> None:
     except Exception:
         pass
 
-    try:
-        stats = {
-            "time": datetime.datetime.utcnow().isoformat("T") + "Z",
-            "total_cpu_percent": psutil.cpu_percent(),
-            "per_process_cpu_info": get_per_process_cpu_info(),
-        }
-        if handle is not None:
-            stats["per_process_gpu_info"] = get_per_process_gpu_info(handle)
-    except Exception as e:
-        stats = {
-            "time": datetime.datetime.utcnow().isoformat("T") + "Z",
-            "error": str(e),
-        }
-    finally:
-        print(json.dumps(stats))
-        time.sleep(1)
+    while True:
+        try:
+            stats = {
+                "time": datetime.datetime.utcnow().isoformat("T") + "Z",
+                "total_cpu_percent": psutil.cpu_percent(),
+                "per_process_cpu_info": get_per_process_cpu_info(),
+            }
+            if handle is not None:
+                stats["per_process_gpu_info"] = get_per_process_gpu_info(handle)
+        except Exception as e:
+            stats = {
+                "time": datetime.datetime.utcnow().isoformat("T") + "Z",
+                "error": str(e),
+            }
+        finally:
+            print(json.dumps(stats))
+            time.sleep(1)
 
 
 if __name__ == "__main__":

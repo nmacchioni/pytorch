@@ -60,13 +60,6 @@ jobs:
       - name: Setup Linux
         uses: ./.github/actions/setup-linux
 
-      - name: Start monitoring script
-        id: monitor-script
-        shell: bash
-        run: |
-          python3 -m tools.stats.monitor &
-          sleep 60
-
       - name: Setup SSH (Click me for login details)
         uses: ./.github/actions/setup-ssh
         with:
