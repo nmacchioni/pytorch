@@ -67,8 +67,7 @@ jobs:
         id: monitor-script
         shell: bash
         run: |
-          python3 -m tools.stats.monitor > usage_log.txt 2>&1 &
-          echo "::set-output name=monitor-script-pid::${!}"
+          python3 -m tools.stats.monitor
 
       - name: Download build artifacts
         uses: ./.github/actions/download-build-artifacts
@@ -165,14 +164,6 @@ jobs:
         if: always()
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Stop monitoring script
-        if: always() && ${{ steps.monitor-script.outputs.monitor-script-pid }}
-        shell: bash
-        env:
-          MONITOR_SCRIPT_PID: ${{ steps.monitor-script.outputs.monitor-script-pid }}
-        run: |
-          kill "$MONITOR_SCRIPT_PID" && cat usage_log.txt
 
       - name: Upload test artifacts
         uses: ./.github/actions/upload-test-artifacts
