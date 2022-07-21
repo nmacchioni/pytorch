@@ -24,6 +24,8 @@ def pip_install(package_name: str) -> None:
 def main() -> None:
     pip_install("psutil")
     pip_install("pynvml")
+    sys.stdout.flush()
+    sys.stderr.flush()
     import psutil  # type: ignore[import]
     import pynvml  # type: ignore[import]
 
