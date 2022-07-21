@@ -1919,7 +1919,7 @@ ProcessedFunction::ProcessedFunction(
         stack.emplace_back(static_cast<int>(size));
       }
       node_op(stack);
-      DCHECK_EQ(stack.size(), pnode->num_outputs());
+      TORCH_DCHECK_EQ(stack.size(), pnode->num_outputs());
       for (const auto i : c10::irange(pnode->num_outputs())) {
         pnode->Output(i) = std::move(stack[i]);
       }
