@@ -56,7 +56,8 @@ jobs:
         id: monitor-script
         shell: bash
         run: |
-          python3 -m tools.stats.monitor
+          python3 -m tools.stats.monitor &
+          sleep 60
 
       - name: Download PyTorch Build Artifacts
         uses: seemethere/download-artifact-s3@v4

@@ -20,7 +20,7 @@ def pip_install(package_name: str) -> None:
         print(output.stderr.decode("utf-8"))
         print(output.stdout.decode("utf-8"))
     package_exists = subprocess.run(
-        [sys.executable, "-m", "pip", "show", "psutil"], capture_output=True
+        [sys.executable, "-m", "pip", "show", package_name], capture_output=True
     )
     print(package_exists.stderr.decode("utf-8"))
     print(package_exists.stdout.decode("utf-8"))

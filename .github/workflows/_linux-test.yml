@@ -67,7 +67,8 @@ jobs:
         id: monitor-script
         shell: bash
         run: |
-          python3 -m tools.stats.monitor
+          python3 -m tools.stats.monitor &
+          sleep 60
 
       - name: Download build artifacts
         uses: ./.github/actions/download-build-artifacts
