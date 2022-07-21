@@ -8,18 +8,17 @@ from typing import Any, Dict, List
 
 
 def pip_install(package_name: str) -> None:
-    if (
-        subprocess.run(
-            [sys.executable, "-m", package_name, "--help"], capture_output=True
-        ).returncode
-        != 0
-    ):
+    package_exists = subprocess.run(
+        [sys.executable, "-m", package_name, "--help"], capture_output=True
+    )
+    print(package_exists.stderr.decode("utf-8"))
+    print(package_exists.stdout.decode("utf-8"))
+    if package_exists.returncode != 0:
         output = subprocess.run(
             [sys.executable, "-m", "pip", "install", package_name], capture_output=True
         )
-        if output.returncode != 0:
-            print(output.stderr.decode("utf-8"))
-            print(output.stdout.decode("utf-8"))
+        print(output.stderr.decode("utf-8"))
+        print(output.stdout.decode("utf-8"))
 
 
 def main() -> None:
