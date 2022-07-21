@@ -11,33 +11,28 @@ def pip_install(package_name: str) -> None:
     package_exists = subprocess.run(
         [sys.executable, "-m", package_name, "--help"], capture_output=True
     )
-    print(package_exists.stderr.decode("utf-8"))
-    print(package_exists.stdout.decode("utf-8"))
     if package_exists.returncode != 0:
         output = subprocess.run(
             [sys.executable, "-m", "pip", "install", package_name], capture_output=True
         )
-        print(output.stderr.decode("utf-8"))
-        print(output.stdout.decode("utf-8"))
-    package_exists = subprocess.run(
-        [sys.executable, "-m", "pip", "show", package_name], capture_output=True
-    )
+        if output.returncode != 0:
+            print(output.stderr.decode("utf-8"))
+            print(output.stdout.decode("utf-8"))
+    # when running this script in the background, pip installs the packages to
+    # a location that is not in a path python uses to look for modules, so we
+    # manually add the location to the path
     location = subprocess.run(
-        [sys.executable, "-m", "pip", "show", package_name, "|", "grep", "Location:"],
+        [sys.executable, "-m", "pip", "show", package_name],
         capture_output=True,
     )
-    sys.path.append(location.stdout.decode("utf-8").strip().split())
-
-    print(package_exists.stderr.decode("utf-8"))
-    print(package_exists.stdout.decode("utf-8"))
+    for s in location.stdout.decode("utf-8").splitlines():
+        if "Location:" in s:
+            sys.path.append(s.split(" ")[1])
 
 
 def main() -> None:
     pip_install("psutil")
     pip_install("pynvml")
-    print(sys.path)
-    sys.stdout.flush()
-    sys.stderr.flush()
     import psutil  # type: ignore[import]
     import pynvml  # type: ignore[import]
 
