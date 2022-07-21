@@ -22,6 +22,12 @@ def pip_install(package_name: str) -> None:
     package_exists = subprocess.run(
         [sys.executable, "-m", "pip", "show", package_name], capture_output=True
     )
+    location = subprocess.run(
+        [sys.executable, "-m", "pip", "show", package_name, "|", "grep", "Location:"],
+        capture_output=True,
+    )
+    sys.path.append(location.stdout.decode("utf-8").strip().split())
+
     print(package_exists.stderr.decode("utf-8"))
     print(package_exists.stdout.decode("utf-8"))
 
